@@ -28,12 +28,36 @@ public class PqrServices {
         return pqrRepository.getById(pqrId);
     }
 
+    /**
+     *
+     * @param pqr
+     * @return
+     */
     public PQR insertPQR(PQR pqr) {
-
+        if ( (pqr.getContent() != null) && (pqr.getType() != null) && (pqr.getClientFK() != null) )
+            return pqrRepository.save(pqr);
+        else
+            return pqr;
     }
 
+    /**
+     *
+     * @param pqr
+     * @return
+     */
     public PQR updatePQR(PQR pqr) {
-
+        if (pqr.getIdPqr() != null){
+            Optional<PQR> temp = pqrRepository.getById(pqr.getIdPqr());
+            if (temp.isPresent()) {
+                if (pqr.getContent() != null)
+                    temp.get().setContent(pqr.getContent());
+                return pqrRepository.save(temp.get());
+            }
+            else
+                return pqr;
+        }
+        else
+            return pqr;
     }
 
     /**

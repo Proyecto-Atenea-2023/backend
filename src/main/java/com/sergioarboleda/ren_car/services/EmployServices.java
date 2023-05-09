@@ -28,10 +28,39 @@ public class EmployServices {
         return employRepository.getById(employId);
     }
 
-    public Employ insertEmploy(Employ employ) {
 
+    /**
+     *
+     * @param employ
+     * @return
+     */
+    public Employ insertEmploy(Employ employ) {
+        if (employ.getName() != null)
+            return employRepository.save(employ);
+        else
+            return employ;
     }
+
+    /**
+     *
+     * @param employ
+     * @return
+     */
     public Employ updateEmploy(Employ employ) {
+        if (employ.getIdEmploy() != null){
+            Optional<Employ> temp = getEmployById(employ.getIdEmploy());
+            if (temp.isPresent()) {
+                if (employ.getName() != null)
+                    temp.get().setName(employ.getName());
+                if (employ.getIsAdmin() != null)
+                    temp.get().setIsAdmin(employ.getIsAdmin());
+                return employRepository.save(temp.get());
+            }
+            else
+                return employ;
+        }
+        else
+            return employ;
 
     }
 
